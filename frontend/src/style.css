@@ -1,0 +1,36 @@
+:root {
+  --bg-color: #fff8e7;
+  --bg-color-rgb: 255, 248, 231;
+  --navbar-bg: rgba(255, 248, 231, 0.7);
+  --text-color: #333333;
+  --text-color-rgb: 51, 51, 51;
+  --links-color: #7c8b9e;
+}
+
+html.dark {
+  --bg-color: #0b1d3a;
+  --bg-color-rgb: 11, 29, 58;
+  --navbar-bg: rgba(11, 29, 58, 0.7);
+  --text-color: #f5f5f5;
+  --text-color-rgb: 245, 245, 245;
+  --links-color: #cbd5e1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --bg-color: #0b1d3a;
+    --bg-color-rgb: 11, 29, 58;
+    --navbar-bg: rgba(11, 29, 58, 0.7);
+    --text-color: #f5f5f5;
+    --text-color-rgb: 245, 245, 245;
+    --links-color: #cbd5e1;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
