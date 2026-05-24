@@ -38,6 +38,56 @@
             "no_mechanization": "✅ No Mechanized Metrics",
             "return_essence": "✅ Return to Building, Exploration & Collaboration"
           }
+        },
+        "whs_tag": [
+            "🚆 Rail Transit",
+            "🏛️ Architecture",
+            "⚙️ Redstone Tech",
+            "🎮 Vanilla Core",
+            "🧩 Modded Multiplayer (Holiday Special)"
+        ],
+        "whs_history": {
+          "title": "📜 Server History",
+          "events": [
+            {
+              "date": "2024-03-27",
+              "title": "WangHai Commune Founded",
+              "desc": "A group of Minecraft enthusiasts gathered under the name 'Commune', beginning a journey of free building and exploration in vanilla survival."
+            },
+            {
+              "date": "2024-03-27 ~ 2026-02-13",
+              "title": "Season 1 · Infrastructure Boom",
+              "desc": "The first rail transit line opened, major settlements took shape. Redstone tech infrastructure grew from scratch into a full industrial cluster."
+            },
+            {
+              "date": "2026-02-13",
+              "title": "Season 2 · A New Beginning",
+              "desc": "Rebranded as 'WangHai Server' with a renewed vision. Upgraded hardware, greater gameplay freedom, and fresh horizons."
+            },
+            {
+              "date": "2026-02-13 — Present",
+              "title": "Steady Growth · Bright Future",
+              "desc": "Rail network continues expanding, tech infrastructure fully upgraded. New district development underway, community steadily growing."
+            }
+          ]
+        },
+        "whs_achievements": {
+          "current_title": "Current Achievements · Fully Established",
+          "current_items": [
+            "🛤️ <strong>Multiple Vanilla Rail Lines</strong> —— Operational, connecting major settlements",
+            "⚡ <strong>Full Tech Infrastructure</strong> —— Farms, mob grinders, auto-storage, crafting stations",
+            "🏗️ Complete Redstone Machine Cluster & Supply System",
+            "🎨 Numerous Architectural Landmarks & Transit Hubs",
+            "📊 High-Performance Server: <strong>yizexiaomu</strong> hardware, low-latency stable TPS"
+          ],
+          "future_title": "Future Plans · Blueprint",
+          "future_items": [
+            "🚄 <strong>Rail Network Expansion</strong> <span class=\"plan-tag\">Planning</span> —— New loop lines & intercity express",
+            "🏭 <strong>Tech Cluster Upgrade</strong> <span class=\"plan-tag\">In Progress</span> —— Next-gen item sorter & multi-dimension engineering",
+            "🏙️ <strong>New District Development</strong> <span class=\"plan-tag\">Design Phase</span> —— Modern architecture meets natural landscape",
+            "🎮 <strong>Mod/Modpack Events</strong> <span class=\"plan-tag\">Seasonal</span> —— Special holiday gameplay for the community",
+            "📖 <strong>Server Wiki & Community Map</strong> <span class=\"plan-tag\">Co-building</span> —— Documenting our history & projects"
+          ]
         }
       }
     }

@@ -6,7 +6,7 @@ import top_navbar from '../components/top_navbar.vue'
 import bottom_navbar from '../components/bottom_navbar.vue';
 
 import { useLanguage } from '../composables/useLanguage'
-const { t, locale, switchLanguage } = useLanguage()
+const { t, tm, locale, switchLanguage } = useLanguage()
 
 const bgImage = ref(defaultBg)
 const firstStatus = ref(null)
@@ -53,11 +53,7 @@ async function fetchStatus(url) {
                 <span>{{ t('pages.home.whs_feature.old_name') }}</span>
             </div>
             <div class="whs-tag">
-                <div>{{ t('pages.home.whs_feature.whs_tag.traffic') }}</div>
-                <div>{{ t('pages.home.whs_feature.whs_tag.building') }}</div>
-                <div>{{ t('pages.home.whs_feature.whs_tag.redstone') }}</div>
-                <div>{{ t('pages.home.whs_feature.whs_tag.vanilla') }}</div>
-                <div>{{ t('pages.home.whs_feature.whs_tag.mod') }}</div>
+                <div v-for="tag in tm('pages.home.whs_feature.whs_tag')">{{ tag }}</div>
             </div>
             <div class="whs-server-status">
                 <div>
@@ -111,7 +107,38 @@ async function fetchStatus(url) {
                     <div>{{ t('pages.home.whs_feature.whs_concept.mini_card.return_essence') }}</div>
                 </div>
             </div>
-            <div></div>
+            <div class="current-achivement">
+                <div>
+                    <h1>{{ t('pages.home.whs_feature.whs_achievements.current_title') }}</h1>
+                    <ul>
+                        <li v-for="item in tm('pages.home.whs_feature.whs_achievements.current_items')" v-html="item"></li>
+                    </ul>
+                </div>
+                <div>
+                    <h1>{{ t('pages.home.whs_feature.whs_achievements.future_title') }}</h1>
+                    <ul>
+                        <li v-for="item in tm('pages.home.whs_feature.whs_achievements.future_items')" v-html="item"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="whs-history">
+            <h1>{{ t('pages.home.whs_feature.whs_history.title') }}</h1>
+            <div class="timeline">
+                <div
+                    class="timeline-event"
+                    v-for="event in tm('pages.home.whs_feature.whs_history.events')"
+                    :key="event.date"
+                >
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">{{ event.date }}</div>
+                    <div class="timeline-card">
+                        <h3>{{ event.title }}</h3>
+                        <p>{{ event.desc }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <bottom_navbar />
@@ -191,6 +218,8 @@ async function fetchStatus(url) {
     justify-content: center;
     width: 50%;
     gap: 10px;
+    padding-top: 40px;
+    border-top: var(--links-color) solid 2px;
 }
 .whs-tag div {
     display: flex;
@@ -349,6 +378,122 @@ async function fetchStatus(url) {
     box-shadow: 0 32px 48px -16px rgba(0, 0, 0, 0.3);
 }
 
+.current-achivement {
+    display: flex;
+    gap: 20px;
+
+    width: 70%;
+
+    justify-content: center;
+    align-items: stretch;
+}
+.current-achivement div {
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--card-color);
+    color: var(--text-color);
+
+    border-radius: 12px;
+    padding: 12px 24px;
+
+    box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.current-achivement div h1 {
+    font-size: 18px;
+    font-weight: 500;
+    border-left: var(--text-color) solid 4px;
+    padding-left: 10px;
+}
+.current-achivement div ul li :deep(strong) {
+    font-weight: 700;
+}
+.current-achivement div ul li :deep(span) {
+    background-color: var(--links-color);
+    color: var(--bg-color);
+
+    padding: 2px 4px;
+    border-radius: 5px;
+}
+.current-achivement div ul {
+    padding-left: 2em;
+}
+.current-achivement div:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 32px 48px -16px rgba(0, 0, 0, 0.3);
+}
+
+.whs-history {
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    padding: 0 16px;
+}
+.whs-history h1 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 32px;
+}
+.timeline {
+    position: relative;
+    padding-left: 32px;
+}
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--links-color);
+    border-radius: 2px;
+}
+.timeline-event {
+    position: relative;
+    margin-bottom: 28px;
+}
+.timeline-dot {
+    position: absolute;
+    left: -25px;
+    top: 8px;
+    width: 14px;
+    height: 14px;
+    background: var(--links-color);
+    border: 3px solid var(--bg-color);
+    border-radius: 50%;
+    z-index: 1;
+}
+.timeline-date {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--links-color);
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+}
+.timeline-card {
+    background-color: var(--card-color);
+    color: var(--text-color);
+    padding: 14px 20px;
+    border-radius: 12px;
+    box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.timeline-card h3 {
+    margin: 0 0 6px 0;
+    font-size: 18px;
+}
+.timeline-card p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.85;
+    line-height: 1.6;
+}
+.timeline-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 32px 48px -16px rgba(0, 0, 0, 0.3);
+}
+
 @media (max-width: 768px) {
     .whs-feature-head {
         width: 100%;
@@ -357,16 +502,15 @@ async function fetchStatus(url) {
         padding: 0 16px;
         box-sizing: border-box;
     }
+    .current-achivement,
     .whs-server-status {
         flex-direction: column;
         width: 100%;
         padding: 0 16px;
         box-sizing: border-box;
     }
+    .whs-concept,
     .whs-saved {
-        width: 80%;
-    }
-    .whs-concept {
         width: 80%;
     }
 }

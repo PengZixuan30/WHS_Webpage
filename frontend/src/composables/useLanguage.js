@@ -6,7 +6,7 @@ import { useLanguage } from '../composables/useLanguage'
 const { t, locale , switchLanguage } = useLanguage()
 */
 export function useLanguage() {
-  const { t, locale } = useI18n()
+  const { t, tm, locale } = useI18n()
 
   onMounted(() => {
     const saved = localStorage.getItem('lang')
@@ -20,5 +20,5 @@ export function useLanguage() {
     localStorage.setItem('lang', lang)
   }
 
-  return { t, locale, switchLanguage }
+  return { t, tm, locale, switchLanguage }
 }
