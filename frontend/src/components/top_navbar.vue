@@ -56,7 +56,7 @@ const closeMenu = () => {
 <style scoped>
 .navbar {
   position: fixed;
-  top: 0;
+  top: 2%;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -65,6 +65,9 @@ const closeMenu = () => {
   width: 80%;
   height: 70px;
   box-sizing: border-box;
+
+  border: none;
+  border-radius: 16px;
 
   display: flex;
   justify-content: space-between;

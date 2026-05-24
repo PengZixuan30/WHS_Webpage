@@ -1,6 +1,8 @@
 :root {
   --bg-color: #fff8e7;
   --bg-color-rgb: 255, 248, 231;
+  --card-color: #ffffff;
+  --card-color-rgb: 255, 255, 255;
   --navbar-bg: rgba(255, 248, 231, 0.7);
   --text-color: #333333;
   --text-color-rgb: 51, 51, 51;
@@ -10,6 +12,8 @@
 html.dark {
   --bg-color: #0b1d3a;
   --bg-color-rgb: 11, 29, 58;
+  --card-color: #162d4a;
+  --card-color-rgb: 22, 45, 74;
   --navbar-bg: rgba(11, 29, 58, 0.7);
   --text-color: #f5f5f5;
   --text-color-rgb: 245, 245, 245;
@@ -20,6 +24,8 @@ html.dark {
   :root:not(.light) {
     --bg-color: #0b1d3a;
     --bg-color-rgb: 11, 29, 58;
+    --card-color: #162d4a;
+    --card-color-rgb: 22, 45, 74;
     --navbar-bg: rgba(11, 29, 58, 0.7);
     --text-color: #f5f5f5;
     --text-color-rgb: 245, 245, 245;

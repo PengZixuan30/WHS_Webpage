@@ -8,5 +8,45 @@
   "nav": {
     "about": "关于",
     "title": "望海服务器"
+  },
+  "pages": {
+    "home": {
+      "title": "望海服务器",
+      "description": "以玩家为中心，将游戏的快乐还给玩家 —— 集轨交、建筑、生电于一体的自由Minecraft社区。",
+      "whs_feature": {
+        "old_name": "曾用名: 望海公社",
+        "server_status": {
+          "first_name": "望海公社: 一周目",
+          "second_name": "望海服务器: 二周目"
+        },
+        "players": "在线玩家: ",
+        "versions": "游戏版本: ",
+        "loading": "加载中...",
+        "whs_saved": {
+          "current": "当前主服",
+          "original": "原版生存",
+          "old": "旧周目 · 圆满归档",
+          "saved": "已归档"
+        },
+        "whs_concept": {
+          "core": "✨核心理念",
+          "core_concept": "“ 以玩家为中心，把游戏的快乐还给玩家",
+          "summary_p": "没有繁忙的生电任务分配，没有绩效考核要求，有的是那份在游戏世界中",
+          "summary_strong": "追寻热爱的自由",
+          "mini_card": {
+            "no_metrics": "✅ 无强制生产指标",
+            "no_mechanization": "✅ 拒绝机械化绩效",
+            "return_essence": "✅ 回归建造/探索/协作本质"
+          }
+        },
+        "whs_tag": {
+          "traffic": "🚆 轨道交通",
+          "building": "🏛️ 建筑工程",
+          "redstone": "⚙️ 生电科技",
+          "vanilla": "🎮 原版核心",
+          "mod": "🧩 模组联机(寒暑假限定)"
+        }
+      }
+    }
   }
 }

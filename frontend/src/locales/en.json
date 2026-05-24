@@ -8,5 +8,38 @@
   "nav": {
     "about": "About",
     "title": "WangHai Server"
+  },
+  "pages": {
+    "home": {
+      "title": "WangHai Server",
+      "description": "Player-centered, bringing the joy of the game back to players — a free Minecraft community integrating rail transit, building, and technical gameplay.",
+      "whs_feature": {
+        "old_name": "Formerly: WangHai Commune",
+        "server_status": {
+          "first_name": "WangHai Commune: Season 1",
+          "second_name": "WangHai Server: Season 2"
+        },
+        "players": "Online Players: ",
+        "versions": "Game Version: ",
+        "loading": "Loading...",
+        "whs_saved": {
+          "current": "Current Main Server",
+          "original": "Vanilla Survival",
+          "old": "Past Seasons · Archived",
+          "saved": "Archived"
+        },
+        "whs_concept": {
+          "core": "✨ Core Philosophy",
+          "core_concept": "\" Player-centered, bringing the joy of gaming back to players",
+          "summary_p": "No hectic task assignments, no performance reviews — only the",
+          "summary_strong": "freedom to pursue what you love",
+          "mini_card": {
+            "no_metrics": "✅ No Mandatory Quotas",
+            "no_mechanization": "✅ No Mechanized Metrics",
+            "return_essence": "✅ Return to Building, Exploration & Collaboration"
+          }
+        }
+      }
+    }
   }
 }
