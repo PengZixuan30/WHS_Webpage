@@ -192,6 +192,11 @@ function scrollToTop() {
     color: var(--bg-color);
 }
 
+.lang-switch button:hover {
+    background: transparent;
+    color: var(--text-color);
+}
+
 .lang-menu {
     display: flex;
     flex-direction: column;

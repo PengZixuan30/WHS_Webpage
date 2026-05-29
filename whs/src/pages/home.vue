@@ -429,6 +429,7 @@ async function fetchStatus(url) {
     max-width: 600px;
     box-sizing: border-box;
     padding: 0 16px;
+    align-self: center;
 }
 .whs-history h1 {
     text-align: center;
@@ -442,7 +443,7 @@ async function fetchStatus(url) {
 .timeline::before {
     content: '';
     position: absolute;
-    left: 12px;
+    left: 15px;
     top: 0;
     bottom: 0;
     width: 3px;

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from mcstatus import JavaServer
 from contextlib import asynccontextmanager
-import asyncio
+import asyncio, json
 
 cache = {
     "first": None,
@@ -66,6 +66,13 @@ async def lifespan(app: FastAPI):
     yield
     task.cancel()
 
+def load_notice():
+    try:
+        with open("notice.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        return
+
 app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
@@ -79,3 +86,7 @@ def first_status():
 @app.get("/api/status/second")
 def second_status():
     return cache["second"]
+
+@app.get("/api/notice")
+def notice():
+    return load_notice()

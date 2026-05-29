@@ -1,10 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 import { useLanguage } from '../composables/useLanguage'
 const { t, locale , switchLanguage } = useLanguage()
 
 const menuOpen = ref(false)
+const noticeEl = ref(null)
+const hasNotice = ref(false)
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
@@ -13,40 +15,73 @@ const toggleMenu = () => {
 const closeMenu = () => {
   menuOpen.value = false
 }
+
+async function notice() {
+  try {
+    const response = await fetch('/api/notice')
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+    const data = await response.json()
+    return data[locale.value] || data.zh || data.en || null
+  } catch (error) {
+    console.error('Failed to fetch notice:', error)
+    return null
+  }
+}
+
+onMounted(() => {
+  notice().then(noticeText => {
+    if (noticeText) {
+      hasNotice.value = true
+      noticeEl.value.textContent = noticeText
+      noticeEl.value.style.display = 'block'
+    } else {
+      hasNotice.value = false
+      noticeEl.value.style.display = 'none'
+    }
+  })
+})
 </script>
 
 <template>
-  <nav class="navbar">
+  <nav class="navbar" :class="{ 'notice-navbar': hasNotice }">
 
-    <div class="logo">
-      <img src="/icons.png" />
-      <a href="/">{{ t('nav.title') }}</a>
-    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; height: 100%;">
 
-    <div class="links desktop-links">
-      <a href="/about">{{ t('nav.about') }}</a>
-    </div>
-
-    <button
-      class="menu-toggle"
-      :class="{ open: menuOpen }"
-      @click="toggleMenu"
-      @mouseenter="menuOpen = true"
-      aria-label="菜单"
-    >
-      <span v-if="!menuOpen" class="icon-hamburger">☰</span>
-      <span v-else class="icon-arrow">▼</span>
-    </button>
-
-    <Transition name="slide">
-      <div
-        v-if="menuOpen"
-        class="mobile-menu"
-        @mouseleave="closeMenu"
-      >
-        <a href="/about" @click="closeMenu">{{ t('nav.about') }}</a>
+      <div class="logo">
+        <img src="/icons.png" />
+        <a href="/">{{ t('nav.title') }}</a>
       </div>
-    </Transition>
+
+      <div class="links desktop-links">
+        <a href="/about">{{ t('nav.about') }}</a>
+      </div>
+
+      <button
+        class="menu-toggle"
+        :class="{ open: menuOpen }"
+        @click="toggleMenu"
+        @mouseenter="menuOpen = true"
+        aria-label="菜单"
+      >
+        <span v-if="!menuOpen" class="icon-hamburger">☰</span>
+        <span v-else class="icon-arrow">▼</span>
+      </button>
+
+      <Transition name="slide">
+        <div
+          v-if="menuOpen"
+          class="mobile-menu"
+          @mouseleave="closeMenu"
+        >
+          <a href="/about" @click="closeMenu">{{ t('nav.about') }}</a>
+        </div>
+      </Transition>
+
+    </div>
+
+    <div class="notice" ref="noticeEl"></div>
 
   </nav>
 </template>
@@ -68,7 +103,7 @@ const closeMenu = () => {
   border-radius: 16px;
 
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
 
   padding: 0 60px;
@@ -76,6 +111,10 @@ const closeMenu = () => {
   background: var(--navbar-bg);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease, color 0.3s ease;
+}
+.notice-navbar {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .logo {
@@ -170,6 +209,30 @@ const closeMenu = () => {
   transform: translateY(-8px);
 }
 
+.notice {
+  position: absolute;
+  top: calc(100%);
+  left: 0;
+  right: 0;
+
+  display: none;
+  padding: 10px 20px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+
+  background: var(--notice-color);
+  backdrop-filter: blur(10px);
+  color: var(--text-color);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  word-break: break-word;
+  transition: all 0.3s ease, color 0.3s ease;
+}
+
 @media (max-width: 768px) {
 
   .navbar {
@@ -241,6 +304,13 @@ const closeMenu = () => {
   .mobile-menu button:hover {
     background: var(--text-color);
     color: var(--bg-color);
+  }
+
+  .notice {
+    left: 10%;
+    right: 10%;
+    font-size: 13px;
+    padding: 8px 16px;
   }
 
 }
