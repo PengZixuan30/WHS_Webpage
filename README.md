@@ -6,7 +6,7 @@
 
 ```
 WHS_Webpage/
-├── frontend/                  # 前端 — Vue 3 + Vite
+├── whs/                  # 前端 — Vue 3 + Vite
 │   ├── public/                # 静态资源（直接映射到根路径）
 │   │   └── icons.png
 │   ├── src/
@@ -59,7 +59,7 @@ WHS_Webpage/
 ### 前端
 
 ```bash
-cd frontend
+cd whs
 
 # 安装依赖
 npm install

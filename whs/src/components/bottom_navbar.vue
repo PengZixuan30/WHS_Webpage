@@ -128,7 +128,7 @@ function scrollToTop() {
 
   background: var(--navbar-bg);
   backdrop-filter: blur(10px);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: all 0.3s ease, color 0.3s ease;
 }
 
 .left {

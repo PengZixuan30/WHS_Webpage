@@ -24,8 +24,7 @@ const closeMenu = () => {
     </div>
 
     <div class="links desktop-links">
-      <a href="/projects">Projects</a>
-      <a href="/about">About</a>
+      <a href="/about">{{ t('nav.about') }}</a>
     </div>
 
     <button
@@ -45,8 +44,7 @@ const closeMenu = () => {
         class="mobile-menu"
         @mouseleave="closeMenu"
       >
-        <a href="/projects" @click="closeMenu">Projects</a>
-        <a href="/about" @click="closeMenu">About</a>
+        <a href="/about" @click="closeMenu">{{ t('nav.about') }}</a>
       </div>
     </Transition>
 
@@ -77,7 +75,7 @@ const closeMenu = () => {
 
   background: var(--navbar-bg);
   backdrop-filter: blur(10px);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: all 0.3s ease, color 0.3s ease;
 }
 
 .logo {
