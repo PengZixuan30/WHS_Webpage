@@ -1,5 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
 import defaultBg from '../assets/background.png'
 
 import top_navbar from '../components/top_navbar.vue'
@@ -33,6 +36,10 @@ async function fetchStatus(url) {
   } catch (e) {
     return { error: true }
   }
+}
+
+function navigateTo(url) {
+    router.push(url)
 }
 </script>
 
@@ -124,7 +131,10 @@ async function fetchStatus(url) {
         </div>
 
         <div class="whs-history">
-            <h1>{{ t('pages.home.whs_feature.whs_history.title') }}</h1>
+            <h1>
+                <span>{{ t('pages.home.whs_feature.whs_history.title') }}</span>
+                <button @click="navigateTo('/history')">{{ t('pages.home.whs_feature.whs_history.button') }}</button>
+            </h1>
             <div class="timeline">
                 <div
                     class="timeline-event"
@@ -140,6 +150,8 @@ async function fetchStatus(url) {
                 </div>
             </div>
         </div>
+
+        <div class="whs-managerment"></div>
         
         <bottom_navbar />
     </div>
@@ -435,7 +447,21 @@ async function fetchStatus(url) {
     text-align: center;
     font-size: 30px;
     margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
+.whs-history h1 button {
+    padding: 10px 24px;
+    font-size: 16px;
+    border: 2px solid var(--text-color);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
 .timeline {
     position: relative;
     padding-left: 32px;

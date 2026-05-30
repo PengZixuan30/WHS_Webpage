@@ -1,12 +1,14 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 
 import { useLanguage } from '../composables/useLanguage'
 const { t, locale , switchLanguage } = useLanguage()
 
 const menuOpen = ref(false)
+const navbarRef = ref(null)
 const noticeEl = ref(null)
 const hasNotice = ref(false)
+const noticeData = ref(null)  // cache full { zh, en } object
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
@@ -16,36 +18,61 @@ const closeMenu = () => {
   menuOpen.value = false
 }
 
-async function notice() {
+function handleClickOutside(event) {
+  if (navbarRef.value && !navbarRef.value.contains(event.target)) {
+    closeMenu()
+  }
+}
+
+async function fetchNotice() {
   try {
     const response = await fetch('/api/notice')
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }
-    const data = await response.json()
-    return data[locale.value] || data.zh || data.en || null
+    noticeData.value = await response.json()
   } catch (error) {
     console.error('Failed to fetch notice:', error)
-    return null
+    noticeData.value = null
   }
 }
 
-onMounted(() => {
-  notice().then(noticeText => {
-    if (noticeText) {
-      hasNotice.value = true
-      noticeEl.value.textContent = noticeText
-      noticeEl.value.style.display = 'block'
-    } else {
-      hasNotice.value = false
-      noticeEl.value.style.display = 'none'
-    }
-  })
+function updateNoticeDisplay() {
+  if (!noticeEl.value) return
+  const data = noticeData.value
+  if (!data) {
+    hasNotice.value = false
+    noticeEl.value.style.display = 'none'
+    return
+  }
+  const text = data[locale.value] || data.zh || data.en || null
+  if (text) {
+    hasNotice.value = true
+    noticeEl.value.textContent = text
+    noticeEl.value.style.display = 'block'
+  } else {
+    hasNotice.value = false
+    noticeEl.value.style.display = 'none'
+  }
+}
+
+onMounted(async () => {
+  await fetchNotice()
+  updateNoticeDisplay()
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+watch(locale, () => {
+  updateNoticeDisplay()
 })
 </script>
 
 <template>
-  <nav class="navbar" :class="{ 'notice-navbar': hasNotice }">
+  <nav class="navbar" :class="{ 'notice-navbar': hasNotice }" ref="navbarRef">
 
     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; height: 100%;">
 
@@ -226,6 +253,7 @@ onMounted(() => {
   font-size: 14px;
   line-height: 1.5;
   text-align: center;
+  font-weight: 600;
 
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(148, 163, 184, 0.15);
@@ -261,6 +289,7 @@ onMounted(() => {
     position: absolute;
     top: 70px;
     right: 12px;
+    z-index: 999;
 
     min-width: 160px;
     padding: 8px 0;
@@ -307,8 +336,6 @@ onMounted(() => {
   }
 
   .notice {
-    left: 10%;
-    right: 10%;
     font-size: 13px;
     padding: 8px 16px;
   }

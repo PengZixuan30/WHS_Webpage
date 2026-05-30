@@ -48,6 +48,7 @@
         ],
         "whs_history": {
           "title": "📜 Server History",
+          "button": "Full History ->",
           "events": [
             {
               "date": "2024-03-27",
