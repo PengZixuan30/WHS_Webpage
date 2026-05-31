@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from mcstatus import JavaServer
 from contextlib import asynccontextmanager
 import asyncio, json
+from database import NewsDatabase
 
 cache = {
     "first": None,
@@ -99,3 +100,11 @@ def second_status():
 @app.get("/api/whs/notice")
 def notice():
     return load_notice()
+
+@app.get("/api/whs/news")
+def news():
+    try:
+        news_db = NewsDatabase("database/news.db")
+        return news_db.get_all_news()
+    except:
+        return []

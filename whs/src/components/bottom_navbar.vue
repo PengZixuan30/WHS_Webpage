@@ -123,7 +123,7 @@ function scrollToTop() {
   position: relative;
   left: 0;
   right: 0;
-  margin: 0 auto;
+  margin-top: 16px;
 
   border-top: 2px solid var(--text-color);
 

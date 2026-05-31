@@ -8,7 +8,9 @@
   },
   "nav": {
     "about": "关于",
-    "title": "望海服务器"
+    "title": "望海服务器",
+    "news": "公告",
+    "join": "加入我们"
   },
   "pages": {
     "home": {
@@ -101,6 +103,9 @@
           "title": "加入我们",
           "understand": "深入了解",
           "join": "加入我们"
+        },
+        "whs_news": {
+          "title": "服务器公告"
         }
       }
     }

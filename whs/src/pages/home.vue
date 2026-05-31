@@ -13,10 +13,13 @@ const { t, tm, locale, switchLanguage } = useLanguage()
 
 import { animate } from 'animejs';
 
+import { fetchBackend } from '../main'
+
 const bgImage = ref(defaultBg)
 const firstStatus = ref(null)
 const secondStatus = ref(null)
 const heroRef = ref(null)
+const newsList = ref([])
 
 const historyRef = ref(null)
 const historyIndex = ref(0)
@@ -79,6 +82,8 @@ onMounted(async () => {
   resizeHandler = () => { stageHeight.value = window.innerHeight - 90 }
   window.addEventListener('scroll', scrollHandler, { passive: true })
   window.addEventListener('resize', resizeHandler)
+
+  newsList.value = await fetchBackend('/api/whs/news')
 })
 
 onUnmounted(() => {
@@ -260,12 +265,23 @@ function navigateTo(url) {
         <div class="whs-joinus">
             <h1>{{ t('pages.home.whs_feature.whs_joinus.title') }}</h1>
             <div>
-                <button>{{ t('pages.home.whs_feature.whs_joinus.understand') }}</button>
-                <button>{{ t('pages.home.whs_feature.whs_joinus.join') }}</button>
+                <button @click="navigateTo('/about')">{{ t('pages.home.whs_feature.whs_joinus.understand') }}</button>
+                <button @click="navigateTo('/join')">{{ t('pages.home.whs_feature.whs_joinus.join') }}</button>
             </div>
         </div>
 
-        <div class="whs-news"></div>
+        <div class="whs-news" v-if="newsList.length > 0">
+            <h1>{{ t('pages.home.whs_feature.whs_news.title') }}</h1>
+            <div
+                v-for="news in newsList"
+                    :key="news.id"
+                    class="news-item"
+                @click="navigateTo('/news/' + news.id)"
+            >
+                <h3><strong>{{ news.title }}</strong><span>{{ news.date }}</span></h3>
+                <p>{{ news.summary }}</p>
+            </div>
+        </div>
         
         <bottom_navbar />
     </div>
@@ -779,6 +795,59 @@ function navigateTo(url) {
 }
 .whs-joinus div button:hover {
     background-color: var(--btn-hover);
+}
+.whs-joinus:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 32px 48px -16px rgba(0, 0, 0, 0.3);
+}
+
+.whs-news {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-self: center;
+    justify-content: center;
+    align-items: stretch;
+}
+.whs-news h1 {
+    flex: 1 1 100%;
+    text-align: center;
+    font-size: 30px;
+}
+.news-item {
+    flex: 1 1 300px;
+    min-width: 0;
+    background-color: var(--card-color);
+    color: var(--text-color);
+    padding: 16px 20px;
+    border-radius: 14px;
+    box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow-wrap: break-word;
+}
+.news-item h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+.news-item h3 strong {
+    font-weight: 600;
+}
+.news-item h3 span {
+    font-size: 12px;
+    color: var(--links-color);
+}
+.news-item p {
+    font-size: 16px;
+    opacity: 0.85;
+}
+.news-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 32px 48px -16px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {

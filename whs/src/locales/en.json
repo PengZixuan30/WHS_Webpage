@@ -8,7 +8,9 @@
   },
   "nav": {
     "about": "About",
-    "title": "WangHai Server"
+    "title": "WangHai Server",
+    "news": "News",
+    "join": "Join Us"
   },
   "pages": {
     "home": {
@@ -101,6 +103,9 @@
           "title": "Join Us",
           "understand": "Learn More",
           "join": "Join Us"
+        },
+        "whs_news": {
+          "title": "Server Announcements"
         }
       }
     }

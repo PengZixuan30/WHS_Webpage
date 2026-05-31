@@ -82,6 +82,8 @@ watch(locale, () => {
       </div>
 
       <div class="links desktop-links">
+        <a href="/news">{{ t('nav.news') }}</a>
+        <a href="/join">{{ t('nav.join') }}</a>
         <a href="/about">{{ t('nav.about') }}</a>
       </div>
 
@@ -102,6 +104,8 @@ watch(locale, () => {
           class="mobile-menu"
           @mouseleave="closeMenu"
         >
+          <a href="/news" @click="closeMenu">{{ t('nav.news') }}</a>
+          <a href="/join" @click="closeMenu">{{ t('nav.join') }}</a>
           <a href="/about" @click="closeMenu">{{ t('nav.about') }}</a>
         </div>
       </Transition>
