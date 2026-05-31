@@ -177,6 +177,9 @@ function scrollToTop() {
     cursor: pointer;
     transition: all 0.3s ease;
 }
+.right button:hover {
+    background: var(--btn-hover);
+}
 
 .switch {
     display: flex;
@@ -204,7 +207,7 @@ function scrollToTop() {
 }
 
 .lang-switch button:hover {
-    background: transparent;
+    background: var(--btn-hover);
     color: var(--text-color);
 }
 

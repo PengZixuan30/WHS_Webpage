@@ -1,6 +1,7 @@
 {
   "pageTitle": {
-    "home": "WangHai Server"
+    "home": "WangHai Server",
+    "about": "WangHai Server - About"
   },
   "bottom_navbar": {
     "backtop": "▲"
@@ -12,7 +13,7 @@
   "pages": {
     "home": {
       "title": "WangHai Server",
-      "description": "Player-centered, bringing the joy of the game back to players — a free Minecraft community integrating rail transit, building, and technical gameplay.",
+      "description": "Player-centered, bringing the joy of the game back to players — a free Minecraft community integrating rail transit, building, and redstone.",
       "whs_feature": {
         "old_name": "Formerly: WangHai Commune",
         "server_status": {
@@ -95,6 +96,11 @@
             "🎮 <strong>Mod/Modpack Events</strong> <span class=\"plan-tag\">Seasonal</span> —— Special holiday gameplay for the community",
             "📖 <strong>Server Official Website & Community Map</strong> <span class=\"plan-tag\">Co-building</span> —— Documenting our history & projects"
           ]
+        },
+        "whs_joinus": {
+          "title": "Join Us",
+          "understand": "Learn More",
+          "join": "Join Us"
         }
       }
     }

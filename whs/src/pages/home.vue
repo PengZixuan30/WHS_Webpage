@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
@@ -16,8 +16,53 @@ import { animate } from 'animejs';
 const bgImage = ref(defaultBg)
 const firstStatus = ref(null)
 const secondStatus = ref(null)
-const navbarRef = ref(null)
 const heroRef = ref(null)
+
+const historyRef = ref(null)
+const historyIndex = ref(0)
+const orbitAngle = ref(0)
+const stageHeight = ref(window.innerHeight - 90)
+const SCROLL_PER_EVENT = 400
+
+const historyEvents = computed(() => tm('pages.home.whs_feature.whs_history.events'))
+const totalEvents = computed(() => historyEvents.value.length)
+const spacerHeight = computed(() => SCROLL_PER_EVENT * totalEvents.value)
+
+const orbitRadius = computed(() => stageHeight.value / 2 + 100)
+const arcCenterX = computed(() => stageHeight.value / 2 * 0.2)
+const arcCenterY = computed(() => stageHeight.value / 2)
+
+const cardStyles = computed(() => {
+  const n = totalEvents.value
+  if (n === 0) return []
+  const spacing = 360 / n
+  return Array.from({ length: n }, (_, i) => {
+    const angle = i * spacing - orbitAngle.value
+    const rad = angle * Math.PI / 180
+    const x = arcCenterX.value + orbitRadius.value * Math.cos(rad)
+    const y = arcCenterY.value + orbitRadius.value * Math.sin(rad)
+    return {
+      left: x + 'px',
+      top: y + 'px',
+      transform: 'translate(-50%, -50%)'
+    }
+  })
+})
+
+let scrollHandler = null
+let resizeHandler = null
+
+function onHistoryScroll() {
+  if (!historyRef.value) return
+  const rect = historyRef.value.getBoundingClientRect()
+  const scrolled = -rect.top
+  const maxScroll = spacerHeight.value
+  const progress = Math.max(0, Math.min(1, scrolled / maxScroll))
+
+  historyIndex.value = Math.min(Math.floor(progress * totalEvents.value), totalEvents.value - 1)
+  const maxAngle = 360 - (360 / totalEvents.value)
+  orbitAngle.value = progress * maxAngle
+}
 
 onMounted(async () => {
   const modules = import.meta.glob('../assets/wanghai_web/*.png', { eager: true })
@@ -29,6 +74,20 @@ onMounted(async () => {
   secondStatus.value = await fetchStatus('/api/whs/status/second')
 
   animate(heroRef.value, { opacity: [0, 1], translateY: [20, 0] }, { duration: 1000, easing: 'easeOutQuad' })
+
+  scrollHandler = () => requestAnimationFrame(onHistoryScroll)
+  resizeHandler = () => { stageHeight.value = window.innerHeight - 90 }
+  window.addEventListener('scroll', scrollHandler, { passive: true })
+  window.addEventListener('resize', resizeHandler)
+})
+
+onUnmounted(() => {
+  if (scrollHandler) {
+    window.removeEventListener('scroll', scrollHandler)
+  }
+  if (resizeHandler) {
+    window.removeEventListener('resize', resizeHandler)
+  }
 })
 
 async function fetchStatus(url) {
@@ -136,20 +195,38 @@ function navigateTo(url) {
             </div>
         </div>
 
-        <div class="whs-history" ref="historyRef">
-            <h1>
-                <span>{{ t('pages.home.whs_feature.whs_history.title') }}</span>
-                <button @click="navigateTo('/history')">{{ t('pages.home.whs_feature.whs_history.button') }}</button>
-            </h1>
-            <div class="timeline">
-                <div
-                    class="timeline-event"
-                    v-for="event in tm('pages.home.whs_feature.whs_history.events')"
-                    :key="event.date"
-                >
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-date">{{ event.date }}</div>
-                    <div class="timeline-card">
+        <div class="whs-history" ref="historyRef" :style="{ height: `calc(100vh + ${spacerHeight}px)` }">
+            <div class="history-sticky">
+                <h1>
+                    <span>{{ t('pages.home.whs_feature.whs_history.title') }}</span>
+                    <button @click="navigateTo('/history')">{{ t('pages.home.whs_feature.whs_history.button') }}</button>
+                </h1>
+                <div class="history-stage">
+                    <div class="semi-circle">
+                        <div class="timeline-markers">
+                            <div
+                                v-for="(event, i) in historyEvents"
+                                :key="i"
+                                class="timeline-marker"
+                                :class="{ active: historyIndex === i }"
+                                :style="{ top: ((i + 0.5) / totalEvents * 100) + '%' }"
+                            >
+                                <span class="marker-dot"></span>
+                                <span class="marker-label">
+                                    <strong>{{ event.date }}</strong>
+                                    <em>{{ event.title }}</em>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        v-for="(event, i) in historyEvents"
+                        :key="i"
+                        class="orbit-card"
+                        :class="{ active: historyIndex === i }"
+                        :style="cardStyles[i]"
+                    >
+                        <span class="orbit-card-badge">{{ i + 1 }} / {{ totalEvents }}</span>
                         <h3>{{ event.title }}</h3>
                         <p>{{ event.desc }}</p>
                     </div>
@@ -179,6 +256,16 @@ function navigateTo(url) {
                 </ul>
             </div>
         </div>
+
+        <div class="whs-joinus">
+            <h1>{{ t('pages.home.whs_feature.whs_joinus.title') }}</h1>
+            <div>
+                <button>{{ t('pages.home.whs_feature.whs_joinus.understand') }}</button>
+                <button>{{ t('pages.home.whs_feature.whs_joinus.join') }}</button>
+            </div>
+        </div>
+
+        <div class="whs-news"></div>
         
         <bottom_navbar />
     </div>
@@ -464,21 +551,27 @@ function navigateTo(url) {
 }
 
 .whs-history {
+    position: relative;
     width: 100%;
-    max-width: 600px;
     box-sizing: border-box;
-    padding: 0 16px;
     align-self: center;
 }
-.whs-history h1 {
+.history-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+.history-sticky h1 {
     text-align: center;
     font-size: 30px;
-    margin-bottom: 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.whs-history h1 button {
+.history-sticky h1 button {
     padding: 10px 24px;
     font-size: 16px;
     border: 2px solid var(--text-color);
@@ -488,64 +581,107 @@ function navigateTo(url) {
     cursor: pointer;
     transition: all 0.3s ease;
 }
+.history-sticky h1 button:hover {
+    background: var(--btn-hover);
+}
 
-.timeline {
+.history-stage {
     position: relative;
-    padding-left: 32px;
+    height: calc(100vh - 90px);
+    overflow: hidden;
 }
-.timeline::before {
-    content: '';
+
+.semi-circle {
     position: absolute;
-    left: 15px;
+    left: 0;
     top: 0;
-    bottom: 0;
-    width: 3px;
-    background: var(--links-color);
-    border-radius: 2px;
-}
-.timeline-event {
-    position: relative;
-    margin-bottom: 28px;
-}
-.timeline-dot {
-    position: absolute;
-    left: -25px;
-    top: 8px;
-    width: 14px;
-    height: 14px;
-    background: var(--links-color);
-    border: 3px solid var(--bg-color);
-    border-radius: 50%;
-    z-index: 1;
-}
-.timeline-date {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--links-color);
-    margin-bottom: 4px;
-    letter-spacing: 1px;
-}
-.timeline-card {
+    height: 100%;
+    aspect-ratio: 1 / 2;
+    border-radius: 0 100% 100% 0 / 0 50% 50% 0;
     background-color: var(--card-color);
     color: var(--text-color);
-    padding: 14px 20px;
-    border-radius: 12px;
-    box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.timeline-card h3 {
-    margin: 0 0 6px 0;
-    font-size: 18px;
+
+.timeline-markers {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
 }
-.timeline-card p {
+.timeline-marker {
+    position: absolute;
+    left: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transform: translateY(-50%);
+    transition: opacity 0.4s ease;
+    opacity: 0.35;
+}
+.timeline-marker.active {
+    opacity: 1;
+}
+.marker-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--links-color);
+    flex-shrink: 0;
+}
+.marker-label {
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--text-color);
+    max-width: 180px;
+}
+.marker-label strong {
+    display: block;
+    font-size: 11px;
+    color: var(--links-color);
+}
+.marker-label em {
+    display: block;
+    font-style: normal;
+    opacity: 0.8;
+}
+
+.orbit-card {
+    position: absolute;
+    width: 200px;
+    background-color: var(--card-color);
+    color: var(--text-color);
+    padding: 16px 20px;
+    border-radius: 14px;
+    box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.3;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.orbit-card.active {
+    opacity: 1;
+    z-index: 20;
+}
+.orbit-card-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--links-color);
+    color: var(--bg-color);
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+.orbit-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+}
+.orbit-card p {
     margin: 0;
     font-size: 14px;
     opacity: 0.85;
     line-height: 1.6;
-}
-.timeline-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 32px 48px -16px rgba(0, 0, 0, 0.3);
 }
 
 .whs-managerment {
@@ -585,6 +721,9 @@ function navigateTo(url) {
     cursor: pointer;
     transition: all 0.3s ease;
 }
+.whs-managerment div button:hover {
+    background-color: var(--btn-hover);
+}
 .whs-managerment div span strong {
     font-weight: 600;
 }
@@ -602,6 +741,44 @@ function navigateTo(url) {
 .whs-managerment div:hover {
     transform: translateY(-4px);
     box-shadow: 0 32px 48px -16px rgba(0, 0, 0, 0.3);
+}
+
+.whs-joinus {
+    margin: 40px 0;
+    padding: 16px 0;
+    width: 80%;
+    background-color: var(--card-color);
+    color: var(--text-color);
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border-radius: 12px;
+    box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+.whs-joinus h1 {
+    font-size: 30px;
+    font-weight: 600;
+}
+.whs-joinus div {
+    display: flex;
+    gap: 20px;
+}
+.whs-joinus div button {
+    padding: 10px 24px;
+    font-size: 16px;
+    border: 2px solid var(--text-color);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.whs-joinus div button:hover {
+    background-color: var(--btn-hover);
 }
 
 @media (max-width: 768px) {
@@ -623,6 +800,18 @@ function navigateTo(url) {
     .whs-concept,
     .whs-saved {
         width: 80%;
+    }
+
+    .orbit-card {
+        width: 160px;
+        padding: 12px 14px;
+    }
+    .orbit-card h3 {
+        font-size: 16px;
+    }
+    .marker-label {
+        max-width: 120px;
+        font-size: 11px;
     }
 }
 </style>

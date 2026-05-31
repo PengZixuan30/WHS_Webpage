@@ -1,6 +1,7 @@
 {
   "pageTitle": {
-    "home": "望海服务器"
+    "home": "望海服务器",
+    "about": "望海服务器 - 关于"
   },
   "bottom_navbar": {
     "backtop": "▲"
@@ -95,6 +96,11 @@
             "🎮 <strong>模组/整合包活动筹备</strong> <span class=\"plan-tag\">短期活动</span> —— 长假特别玩法，丰富社区体验",
             "📖 <strong>服务器官网与社区地图</strong> <span class=\"plan-tag\">共建中</span> —— 记录历史与工程"
           ]
+        },
+        "whs_joinus": {
+          "title": "加入我们",
+          "understand": "深入了解",
+          "join": "加入我们"
         }
       }
     }

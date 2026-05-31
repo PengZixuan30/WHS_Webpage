@@ -7,6 +7,12 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: { titleKey: 'pageTitle.home'}
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('../pages/about.vue'),
+    meta: { titleKey: 'pageTitle.about'}
   }
 ]
 

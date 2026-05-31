@@ -77,7 +77,16 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 def root():
-    return {"message": "WHS Server API", "status": "OK"}
+    return {"message": "Server API", "status": "OK"}
+
+@app.get("/api/whs")
+def whs():
+    return {
+        "title_suffix": {
+            "zh": " - 一个集生电、轨交、建筑于一体的自由、开放Minecraft服务器",
+            "en": " - A free and open Minecraft server that integrates redstone, rail transit, and architecture"
+        }
+    }
 
 @app.get("/api/whs/status/first")
 def first_status():
