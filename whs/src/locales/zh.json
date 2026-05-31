@@ -72,6 +72,12 @@
             }
           ]
         },
+        "whs_management": {
+          "title": "👥 管理团队",
+          "owner": "服主",
+          "hardware_provider": "服务器物理机提供者",
+          "admins": "管理员"
+        },
         "whs_achievements": {
           "current_title": "当前成果 · 基建完备",
           "current_items": [

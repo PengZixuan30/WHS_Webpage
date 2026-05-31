@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
@@ -11,9 +11,13 @@ import bottom_navbar from '../components/bottom_navbar.vue';
 import { useLanguage } from '../composables/useLanguage'
 const { t, tm, locale, switchLanguage } = useLanguage()
 
+import { animate } from 'animejs';
+
 const bgImage = ref(defaultBg)
 const firstStatus = ref(null)
 const secondStatus = ref(null)
+const navbarRef = ref(null)
+const heroRef = ref(null)
 
 onMounted(async () => {
   const modules = import.meta.glob('../assets/wanghai_web/*.png', { eager: true })
@@ -21,8 +25,10 @@ onMounted(async () => {
   const allImages = [defaultBg, ...wanghaiImages]
   bgImage.value = allImages[Math.floor(Math.random() * allImages.length)]
 
-  firstStatus.value = await fetchStatus('/api/status/first')
-  secondStatus.value = await fetchStatus('/api/status/second')
+  firstStatus.value = await fetchStatus('/api/whs/status/first')
+  secondStatus.value = await fetchStatus('/api/whs/status/second')
+
+  animate(heroRef.value, { opacity: [0, 1], translateY: [20, 0] }, { duration: 1000, easing: 'easeOutQuad' })
 })
 
 async function fetchStatus(url) {
@@ -48,7 +54,7 @@ function navigateTo(url) {
         <top_navbar />
 
         <div class="hero" :style="{ backgroundImage: `url(${bgImage})` }">
-            <div class="hero-overlay">
+            <div class="hero-overlay" ref="heroRef">
                 <h1>{{ t('pages.home.title') }}</h1>
                 <p>{{ t('pages.home.description') }}</p>
             </div>
@@ -130,7 +136,7 @@ function navigateTo(url) {
             </div>
         </div>
 
-        <div class="whs-history">
+        <div class="whs-history" ref="historyRef">
             <h1>
                 <span>{{ t('pages.home.whs_feature.whs_history.title') }}</span>
                 <button @click="navigateTo('/history')">{{ t('pages.home.whs_feature.whs_history.button') }}</button>
@@ -151,7 +157,28 @@ function navigateTo(url) {
             </div>
         </div>
 
-        <div class="whs-managerment"></div>
+        <div class="whs-managerment">
+            <h1>{{ t('pages.home.whs_feature.whs_management.title') }}</h1>
+            <div>
+                <span><strong>{{ t('pages.home.whs_feature.whs_management.owner') }}</strong>: stevendjr</span>
+                <button @click="navigateTo('/user/stevendjr')">GO TO</button>
+            </div>
+            <div>
+                <span><strong>{{ t('pages.home.whs_feature.whs_management.hardware_provider') }}</strong>: yizexiaomu</span>
+                <button @click="navigateTo('/user/yizexiaomu')">GO TO</button>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; ">
+                <strong>{{ t('pages.home.whs_feature.whs_management.admins') }}</strong>
+                <ul>
+                    <li><span>yello</span><button @click="navigateTo('/user/yello')">GO TO</button></li>
+                    <li><span>Zele</span><button @click="navigateTo('/user/Zele')">GO TO</button></li>
+                    <li><span>lyh1379</span><button @click="navigateTo('/user/lyh1379')">GO TO</button></li>
+                    <li><span>Zihark</span><button @click="navigateTo('/user/Zihark')">GO TO</button></li>
+                    <li><span>q__w__p</span><button @click="navigateTo('/user/q__w__p')">GO TO</button></li>
+                    <li><span>PeaFlower_9331</span><button @click="navigateTo('/user/PeaFlower_9331')">GO TO</button></li>
+                </ul>
+            </div>
+        </div>
         
         <bottom_navbar />
     </div>
@@ -521,6 +548,62 @@ function navigateTo(url) {
     box-shadow: 0 32px 48px -16px rgba(0, 0, 0, 0.3);
 }
 
+.whs-managerment {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-self: center;
+    gap: 20px;
+    align-items: stretch;
+    padding: 20px 16px;
+    width: 80%;
+    transition: all 0.2s ease;
+}
+.whs-managerment h1 {
+    font-size: 30px;
+    align-self: center;
+}
+.whs-managerment div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    background-color: var(--card-color);
+    color: var(--text-color);
+    padding: 12px 24px;
+    border-radius: 12px;
+    box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+.whs-managerment div button {
+    padding: 10px 24px;
+    font-size: 16px;
+    border: 2px solid var(--text-color);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.whs-managerment div span strong {
+    font-weight: 600;
+}
+.whs-managerment div ul {
+    margin: 0;
+    padding-left: 24px;
+    align-self: stretch;
+}
+.whs-managerment div ul li {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.whs-managerment div:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 32px 48px -16px rgba(0, 0, 0, 0.3);
+}
+
 @media (max-width: 768px) {
     .whs-feature-head {
         width: 100%;
@@ -536,6 +619,7 @@ function navigateTo(url) {
         padding: 0 16px;
         box-sizing: border-box;
     }
+    .whs-managerment,
     .whs-concept,
     .whs-saved {
         width: 80%;

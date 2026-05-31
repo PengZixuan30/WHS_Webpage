@@ -62,17 +62,8 @@ WHS_Webpage/
 
 | 平台 | 文件 | 使用方式 |
 |------|------|----------|
-| 跨平台 | `main.py` | `python main.py`（Windows）或 `python3 main.py`（macOS/Linux） |
 | Windows | `start.bat` | 双击运行，或在终端执行 `.\start.bat` |
 | macOS / Linux | `start.sh` | 先赋予执行权限：`chmod +x start.sh`，然后 `./start.sh` |
-
-> [!NOTE]
-> **推荐 `main.py`**：跨平台通用，前后端日志合并输出到同一终端，前缀 `[Backend]` / `[Frontend]` 区分来源，`Ctrl+C` 一键停止。
-
-脚本会自动完成以下工作：
-
-1. 激活 Python 虚拟环境 → 在 **8000** 端口启动 FastAPI 后端
-2. 安装 npm 依赖 → 在 **5173** 端口启动 Vite 前端
 
 > [!NOTE]
 > **注意**：首次启动前请确保已安装 [Node.js](https://nodejs.org/) 和 [Python 3](https://www.python.org/)，且后端已创建虚拟环境（Windows 项目已预置 `backend/venv/`）。

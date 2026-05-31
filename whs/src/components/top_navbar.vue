@@ -8,7 +8,7 @@ const menuOpen = ref(false)
 const navbarRef = ref(null)
 const noticeEl = ref(null)
 const hasNotice = ref(false)
-const noticeData = ref(null)  // cache full { zh, en } object
+const noticeData = ref(null)
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
@@ -26,7 +26,7 @@ function handleClickOutside(event) {
 
 async function fetchNotice() {
   try {
-    const response = await fetch('/api/notice')
+    const response = await fetch('/api/whs/notice')
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }

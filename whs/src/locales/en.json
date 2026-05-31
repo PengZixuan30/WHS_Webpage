@@ -72,6 +72,12 @@
             }
           ]
         },
+        "whs_management": {
+          "title": "👥 Management Team",
+          "owner": "Server Owner",
+          "hardware_provider": "Server Hardware Provider",
+          "admins": "Administrators"
+        },
         "whs_achievements": {
           "current_title": "Current Achievements · Fully Established",
           "current_items": [

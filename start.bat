@@ -9,7 +9,7 @@ echo.
 
 :: ========== Backend ==========
 echo [1/2] Starting Backend (FastAPI)...
-start "WHS-Backend" cmd /k "cd /d "%~dp0backend" && call venv\Scripts\activate.bat && echo Backend venv activated. && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+start "WHS-Backend" cmd /k "cd /d "%~dp0backend" && call venv\Scripts\activate.bat && echo Backend venv activated. && call uvicorn main:app --reload"
 
 :: ========== Frontend ==========
 echo [2/2] Starting Frontend (Vite)...

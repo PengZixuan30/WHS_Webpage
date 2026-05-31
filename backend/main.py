@@ -77,16 +77,16 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 def root():
-    return {"message": "WHS Server API"}
+    return {"message": "WHS Server API", "status": "OK"}
 
-@app.get("/api/status/first")
+@app.get("/api/whs/status/first")
 def first_status():
     return cache["first"]
 
-@app.get("/api/status/second")
+@app.get("/api/whs/status/second")
 def second_status():
     return cache["second"]
 
-@app.get("/api/notice")
+@app.get("/api/whs/notice")
 def notice():
     return load_notice()

@@ -1,11 +1,12 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { Sun, Moon, MoonIcon, SunIcon } from 'lucide-vue-next'
 
 import { useLanguage } from '../composables/useLanguage'
 const { t, locale , switchLanguage } = useLanguage()
 
 const menuOpen = ref(false)
+const navbarRef = ref(null)
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
@@ -15,6 +16,11 @@ const closeMenu = () => {
   menuOpen.value = false
 }
 
+function handleClickOutside(event) {
+  if (navbarRef.value && !navbarRef.value.contains(event.target)) {
+    closeMenu()
+  }
+}
 
 const isDark = ref(false)
 
@@ -27,6 +33,11 @@ onMounted(() => {
     isDark.value = false
     document.documentElement.classList.add('light')
   }
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
 })
 
 function toggleTheme() {
@@ -49,7 +60,7 @@ function scrollToTop() {
 </script>
 
 <template>
-    <footer class="navbar">
+    <footer class="navbar" ref="navbarRef">
         <div class="left">
             <a
                 href="https://github.com/PengZixuan30/WHS_Webpage"
