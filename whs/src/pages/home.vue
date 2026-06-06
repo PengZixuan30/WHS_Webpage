@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
@@ -276,7 +276,7 @@ function navigateTo(url) {
                 v-for="news in newsList"
                     :key="news.id"
                     class="news-item"
-                @click="navigateTo('/news/' + news.id)"
+                @click="navigateTo({ name: 'NewsDetail', params: { id: news.id } })"
             >
                 <h3><strong>{{ news.title }}</strong><span>{{ news.date }}</span></h3>
                 <p>{{ news.summary }}</p>

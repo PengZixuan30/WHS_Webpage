@@ -1,18 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../pages/home.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: () => import("../pages/home.vue"),
     meta: { titleKey: 'pageTitle.home'}
   },
   {
     path: '/about',
     name: 'About',
-    component: () => import('../pages/about.vue'),
+    component: () => import("../pages/about.vue"),
     meta: { titleKey: 'pageTitle.about'}
+  },
+  {
+    path: '/news',
+    name: 'News',
+    component: () => import("../pages/news_platform.vue"),
+    meta: { titleKey: 'pageTitle.news'}
+  },
+  {
+    path: '/news/:id',
+    name: 'NewsDetail',
+    component: () => import("../pages/news_detail.vue"),
+    meta: { titleKey: 'pageTitle.news'}
   }
 ]
 

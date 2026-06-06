@@ -48,7 +48,7 @@ function updateNoticeDisplay() {
   const text = data[locale.value] || data.zh || data.en || null
   if (text) {
     hasNotice.value = true
-    noticeEl.value.textContent = text
+    noticeEl.value.innerHTML = text
     noticeEl.value.style.display = 'block'
   } else {
     hasNotice.value = false
@@ -272,6 +272,14 @@ watch(locale, () => {
   border: 1px solid rgba(148, 163, 184, 0.15);
   word-break: break-word;
   transition: all 0.3s ease, color 0.3s ease;
+}
+.notice :deep(a) {
+  color: var(--links-color);
+  text-decoration: none;
+}
+.notice :deep(a:hover) {
+  color: var(--text-color);
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {

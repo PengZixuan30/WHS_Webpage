@@ -16,7 +16,7 @@ onMounted(async () => {
       titleSuffix.value = data.title_suffix
     }
   } catch {
-    // keep empty suffix on fetch failure
+    console.error('Failed to fetch title suffix')
   }
 })
 
@@ -24,7 +24,11 @@ watch([() => route.meta.titleKey, locale, titleSuffix], () => {
   const key = route.meta.titleKey || 'pageTitle.home'
   const base = t(key)
   const suffix = titleSuffix.value[locale.value] || ''
-  document.title = base + suffix
+  if (key === 'pageTitle.home' && suffix) {
+    document.title = base + suffix
+  } else {
+    document.title = base
+  }
 }, { immediate: true })
 </script>
 

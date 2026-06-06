@@ -40,7 +40,7 @@ class NewsDatabase:
         with sqlite3.connect(self.db_path) as conn:
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
-            cursor.execute('SELECT id, title, date, summary FROM news ORDER BY date DESC')
+            cursor.execute('SELECT id, title, date, summary, content FROM news ORDER BY date DESC, id DESC')
             return [dict(row) for row in cursor.fetchall()]
 
     def get_news_by_id(self, news_id: int):

@@ -1,7 +1,8 @@
 {
   "pageTitle": {
     "home": "望海服务器",
-    "about": "望海服务器 - 关于"
+    "about": "望海服务器 - 关于",
+    "news": "望海服务器 - 新闻公告"
   },
   "bottom_navbar": {
     "backtop": "▲"
