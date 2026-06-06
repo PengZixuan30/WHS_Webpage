@@ -77,8 +77,10 @@ watch(locale, () => {
     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; height: 100%;">
 
       <div class="logo">
-        <img src="/icons.png" />
-        <a href="/">{{ t('nav.title') }}</a>
+        <a href="/">
+          <img src="/icons.png" />
+          <span>{{ t('nav.title') }}</span>
+        </a>
       </div>
 
       <div class="links desktop-links">
@@ -153,18 +155,25 @@ watch(locale, () => {
   align-items: center;
   gap: 10px;
 }
-
 .logo a {
   font-size: 28px;
   font-weight: bold;
   color: var(--text-color);
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
 }
-
-.logo img {
+.logo a img {
   width: 36px;
   height: 36px;
   object-fit: contain;
+}
+@media (max-width: 768px) {
+  .logo a span {
+    display: none;
+  }
 }
 
 .links {

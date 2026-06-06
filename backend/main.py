@@ -69,8 +69,8 @@ async def lifespan(app: FastAPI):
 
 def load_notice():
     try:
-        with open("notice.json", "r", encoding="utf-8") as f:
-            return json.load(f)
+        with open("config.json", "r", encoding="utf-8") as f:
+            return json.load(f).get("notice", {})
     except:
         return
 
@@ -104,7 +104,7 @@ def notice():
 @app.get("/api/whs/news")
 def news():
     try:
-        news_db = NewsDatabase("database/news.db")
+        news_db = NewsDatabase("database/whs_news.db")
         return news_db.get_all_news()
     except:
         return []
