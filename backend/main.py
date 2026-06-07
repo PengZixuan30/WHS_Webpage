@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from mcstatus import JavaServer
 from contextlib import asynccontextmanager
 import asyncio, json
@@ -108,3 +108,12 @@ def news():
         return news_db.get_all_news()
     except:
         return []
+
+@app.get("/api/whs/news/{news_id}")
+def news_detail(news_id: int):
+    news_db = NewsDatabase("database/whs_news.db")
+    result = news_db.get_news_by_id(news_id)
+    if result:
+        return result
+    else:
+        raise HTTPException(status_code=404, detail="News not found")
